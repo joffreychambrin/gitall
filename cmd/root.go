@@ -22,6 +22,11 @@ func Execute() {
 	// path := "/Users/jchambrin/Work/dev/"
 	path := getPath()
 	switch args[0] {
+	case "clean-config":
+		err := config.CleanConfiguration()
+		if err != nil {
+			log.Fatal(err)
+		}
 	case "list":
 		list, err := config.List()
 		if err != nil {

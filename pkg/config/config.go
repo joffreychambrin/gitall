@@ -28,11 +28,15 @@ func List() ([]string, error) {
 }
 
 func Configure(path string, folders []string) error {
-	directories := getDirectories(path, folders)
+	directories := GetDirectories(path, folders)
 	return persistConfig(directories)
 }
 
-func getDirectories(path string, folders []string) []string {
+func CleanConfiguration() error {
+	return os.Remove(configFile)
+}
+
+func GetDirectories(path string, folders []string) []string {
 	includeAll := len(folders) == 0
 	directories := make([]string, 0)
 	files, err := os.ReadDir(path)
@@ -78,7 +82,7 @@ func persistConfig(directories []string) error {
 func readConfig() (*configData, error) {
 	yfile, err := ioutil.ReadFile(configFile)
 	if err != nil {
-		return nil, err
+		return &configData{Directories: make([]string, 0)}, nil
 	}
 	var data *configData
 	err = yaml.Unmarshal(yfile, &data)

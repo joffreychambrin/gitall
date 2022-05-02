@@ -13,6 +13,9 @@ func Exec(path string, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if len(directories) == 0 {
+		directories = config.GetDirectories(path, nil)
+	}
 	for _, dir := range directories {
 		fmt.Printf("==> %s <==\n", dir)
 		out, err := execCmd(args, dir)
