@@ -19,10 +19,21 @@ func Execute() {
 		log.Fatal("no argument provided")
 	}
 
-	// path := "/Users/jchambrin/Work/dev/"
 	path := getPath()
 	switch args[0] {
-	case "clean-config":
+	case "configure":
+		executeConfigure(path, args[1:])
+	default:
+		exec.Exec(path, os.Args[1:])
+	}
+}
+
+func executeConfigure(path string, args []string) {
+	if len(args) == 0 {
+		log.Fatal("no argument provided")
+	}
+	switch args[0] {
+	case "clean":
 		err := config.CleanConfiguration()
 		if err != nil {
 			log.Fatal(err)
@@ -33,15 +44,12 @@ func Execute() {
 			log.Fatal(err)
 		}
 		fmt.Println(list)
-	case "configure":
+	case "create":
 		err := config.Configure(path, args[1:])
 		if err != nil {
 			log.Fatal(err)
 		}
-	default:
-		exec.Exec(path, os.Args[1:])
 	}
-
 }
 
 func getPath() string {

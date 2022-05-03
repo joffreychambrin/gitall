@@ -45,7 +45,9 @@ func GetDirectories(path string, folders []string) []string {
 	}
 	for _, file := range files {
 		if file.IsDir() && (includeAll || contains(folders, file.Name())) {
-			directories = append(directories, filepath.Join(path, file.Name()))
+			if _, err := os.Stat(filepath.Join(path, file.Name(), ".git")); err == nil {
+				directories = append(directories, filepath.Join(path, file.Name()))
+			}
 		}
 	}
 
